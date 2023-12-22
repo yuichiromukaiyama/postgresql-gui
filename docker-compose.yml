@@ -1,0 +1,19 @@
+version: "3"
+services:
+  db:
+    image: postgres:14
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+  console:
+    image: sosedoff/pgweb
+    ports:
+      - 8081:8081
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/postgres?sslmode=disable
+    depends_on:
+      - db
